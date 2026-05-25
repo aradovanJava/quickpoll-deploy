@@ -1,0 +1,37 @@
+# ============================================================
+#  Render Blueprint — one-file describing the whole stack.
+#  Push this to GitHub, then on render.com:
+#    New + → Blueprint → pick this repo. Render creates both
+#    the web service and the database automatically.
+# ============================================================
+
+services:
+  - type: web
+    name: quickpoll
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DEPLOYMENT_LABEL
+        value: render-free
+      - key: DATABASE_URL
+        fromDatabase:
+          name: quickpoll-db
+          property: connectionString
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: quickpoll-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: quickpoll-db
+          property: password
+
+databases:
+  - name: quickpoll-db
+    databaseName: quickpoll
+    user: quickpoll
+    plan: free

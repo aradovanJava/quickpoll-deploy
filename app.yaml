@@ -1,0 +1,19 @@
+# ============================================================
+#  Google Cloud Run / App Engine config
+#  Cloud Run does NOT strictly need this file (it reads the
+#  Dockerfile), but if you want to deploy to App Engine
+#  flexible or set runtime hints, this is the place.
+# ============================================================
+
+runtime: java25
+env: standard
+instance_class: F2
+
+env_variables:
+  SPRING_PROFILES_ACTIVE: "prod"
+  DEPLOYMENT_LABEL: "google-cloud-run"
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always

@@ -1,0 +1,44 @@
+# ============================================================
+#  QuickPoll — docker-compose stack
+#  Starts: app (Spring Boot) + db (PostgreSQL 16)
+#  Usage:
+#    docker compose up --build
+#    open http://localhost:8080
+# ============================================================
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: quickpoll-db
+    environment:
+      POSTGRES_DB: quickpoll
+      POSTGRES_USER: quickpoll
+      POSTGRES_PASSWORD: quickpoll
+    volumes:
+      - quickpoll-data:/var/lib/postgresql/data
+    ports:
+      # Exposed so you can connect with DBeaver / pgAdmin during demos.
+      # Remove the host:container mapping for security in production.
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quickpoll -d quickpoll"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    container_name: quickpoll-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DEPLOYMENT_LABEL: docker-compose
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  quickpoll-data:

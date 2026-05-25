@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>QuickPoll</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>QuickPoll</h1>
+        <p class="subtitle">A deployable Spring Boot demo</p>
+    </header>
+
+    <section class="polls">
+        <div class="section-head">
+            <h2>Active polls</h2>
+            <a class="btn btn-primary" th:href="@{/polls/new}">+ New poll</a>
+        </div>
+
+        <div class="poll-card" th:each="poll : ${polls}">
+            <a th:href="@{'/polls/' + ${poll.id}}">
+                <h3 th:text="${poll.question}">Question goes here</h3>
+                <p class="meta">
+                    <span th:text="${poll.options.size()} + ' options'">2 options</span>
+                    ·
+                    <span th:text="${poll.totalVotes()} + ' total votes'">0 total votes</span>
+                </p>
+            </a>
+        </div>
+
+        <p th:if="${#lists.isEmpty(polls)}" class="empty">No polls yet — create the first one!</p>
+    </section>
+
+    <footer>
+        <p>
+            Deployed to: <span class="deployment-label" th:text="${deploymentLabel}">unknown</span>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

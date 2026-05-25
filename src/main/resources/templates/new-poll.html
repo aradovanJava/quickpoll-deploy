@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>New poll</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a class="back-link" th:href="@{/}">← Cancel</a>
+        <h1>Create a new poll</h1>
+    </header>
+
+    <form th:action="@{/polls}" method="post" class="new-poll-form">
+        <label>
+            <span class="field-label">Question</span>
+            <input type="text" name="question" required maxlength="200"
+                   placeholder="e.g. Which IDE for Java?"/>
+        </label>
+
+        <label>
+            <span class="field-label">Option 1</span>
+            <input type="text" name="options" required maxlength="200"/>
+        </label>
+        <label>
+            <span class="field-label">Option 2</span>
+            <input type="text" name="options" required maxlength="200"/>
+        </label>
+        <label>
+            <span class="field-label">Option 3 (optional)</span>
+            <input type="text" name="options" maxlength="200"/>
+        </label>
+        <label>
+            <span class="field-label">Option 4 (optional)</span>
+            <input type="text" name="options" maxlength="200"/>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Create poll</button>
+    </form>
+
+    <footer>
+        <p>
+            Deployed to: <span class="deployment-label" th:text="${deploymentLabel}">unknown</span>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

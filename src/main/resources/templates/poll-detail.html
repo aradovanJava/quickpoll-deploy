@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${poll.question}">Poll</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <header>
+        <a class="back-link" th:href="@{/}">← Back to all polls</a>
+        <h1 th:text="${poll.question}">Question</h1>
+        <p class="meta" th:text="${poll.totalVotes()} + ' total votes'">0 votes</p>
+    </header>
+
+    <form th:action="@{'/polls/' + ${poll.id} + '/vote'}" method="post" class="vote-form">
+        <div class="option-row" th:each="option : ${poll.options}">
+            <label class="option">
+                <input type="radio" name="optionId" th:value="${option.id}" required/>
+                <div class="option-text">
+                    <span th:text="${option.text}">Option</span>
+                    <span class="vote-count" th:text="${option.votes} + ' votes'">0 votes</span>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar"
+                         th:style="'width:' + (${poll.totalVotes()} > 0 ? (${option.votes} * 100 / ${poll.totalVotes()}) : 0) + '%'"></div>
+                </div>
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cast vote</button>
+    </form>
+
+    <footer>
+        <p>
+            Deployed to: <span class="deployment-label" th:text="${deploymentLabel}">unknown</span>
+        </p>
+    </footer>
+</div>
+</body>
+</html>
